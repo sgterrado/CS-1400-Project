@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 //Handles File Management
 class ReadingWriting {
-    private final String TEXT_FILE = "C:\\Users\\lalat\\IdeaProjects\\untitled\\src\\main\\resources\\wordFile.txt";
+    private final String TEXT_FILE = "wordFile.txt";
     private final int numberQuestions = Main.NUM_QUESTIONS; //Get number of questions
     private int[][] mainArray; //Equivalent of EntryList, with each row as an Entry of int questions
     private int mainArrayLength;
