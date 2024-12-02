@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 //Handles File Management
 class ReadingWriting {
-    private final String TEXT_FILE = "C:\\Users\\lalat\\IdeaProjects\\untitled\\src\\main\\resources\\wordFile.txt";
+    private final String TEXT_FILE = "wordFile.txt";
     private boolean haveGAD; //Ask questions about anxiety (Generalized Anxiety Disorders)?
     private boolean haveDep; //As questions about depression?
 
