@@ -6,11 +6,6 @@ public class Entry {
 
     //Constructors
     public Entry(){}
-    public Entry(int d, int n){
-        this.date = d;
-        this.numQuestions = n;
-        this.values = new int[numQuestions];
-    }
     public Entry(int d, int[] a) {
         this.date = d;
         this.numQuestions = a.length;
@@ -27,11 +22,13 @@ public class Entry {
     }
 
     //Testing
-    public void print(){
+    public String print(){
+        String ret = date + " ";
         for(int i : values){
-            System.out.print(i + " ");
+            ret += i + " ";
         }
-        System.out.println();
+        ret += "\n";
+        return ret;
     }
 
     //Get vars
@@ -44,9 +41,6 @@ public class Entry {
             }
         }
         return this.txt;
-    }
-    public int getIntAt(int index){
-        return this.values[index];
     }
 
 }
