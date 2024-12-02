@@ -40,15 +40,18 @@ public class EntryList {
     }
 
     //Shawn: Pulls Average Data from past 2 weeks
-    public double[] avgData(int date){
+    public double[] avgData(int maxDate){
         int[][] data = getIntInt();
         double gadTotal = 0.0; double depTotal = 0.0;
-        int stop = date - 14; //to get the 2-week range
+        int minDate = maxDate - 14; //to get the 2-week range
+        if(minDate%1000 > 365){ //if minDate is between YY985 - YY999
+            minDate -= 634; //YY985 --> YY351 YY999 --> YY365
+        }
         int numDays = 0; //to calculate results
         try{
             // loop iterates through entire result table, starting from the selected date
             for(int[] ints : data){
-                if(stop < ints[0] && ints[0] <= date) {
+                if(minDate < ints[0] && ints[0] <= maxDate) {
                     for (int j = 2; j < Main.GAD_QUESTIONS + 2; j++) { //skip date and mood
                         gadTotal += ints[j]; // the answers to each question in the row are tallied
                     }
