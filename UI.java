@@ -26,7 +26,7 @@ public class UI {
     //Constructor
     public UI(){
         scnr = new Scanner(System.in);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyDDD");
         Date d = new Date();
         date = Integer.parseInt(formatter.format(d));
     }
