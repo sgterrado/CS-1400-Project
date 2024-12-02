@@ -13,7 +13,7 @@ Instructions for Use:
 1. A welcome message will pop up, asking whether you're using this app for anxiety(1), depression(2), or both(3). Type in the corresponding number to answer the question.
 2. You will then be asked a series of other questions. Answer each of them with the number that corresponds to your answer. The answers may be on a scale from 1 to 6 or be a yes/no question to be answered with a 1 or 0.
    - Entering a number out of those prescribed ranges will trigger an "invalid" message and you'll have to repeat the question.
-3. 
+3. Once you've answered all the questions, review the advice to handle your current mood and the scores for anxiety and depression your answers over the last two weeks have earned.
 
 Created by:
 Angela Merrill: https://github.com/GooseJacket
