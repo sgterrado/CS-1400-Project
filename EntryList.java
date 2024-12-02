@@ -32,10 +32,10 @@ public class EntryList {
 
     //Testing
     public void testingPrint(){
-        System.out.println(this.mainArrayLength);
+        System.out.println("length: " + this.mainArrayLength);
         for(int i = 0; i < this.mainArrayLength; i++){
-            System.out.println(i);
-            this.mainArray[i].print();
+            System.out.print("row " + i + ": ");
+            System.out.print(this.mainArray[i].print());
         }
     }
 
@@ -49,10 +49,10 @@ public class EntryList {
             // loop iterates through entire result table, starting from the selected date
             for(int[] ints : data){
                 if(stop < ints[0] && ints[0] <= date) {
-                    for (int j = 1; j < Main.GAD_QUESTIONS + 1; j++) { //skip first because first is date
+                    for (int j = 2; j < Main.GAD_QUESTIONS + 2; j++) { //skip date and mood
                         gadTotal += ints[j]; // the answers to each question in the row are tallied
                     }
-                    for (int j = Main.GAD_QUESTIONS + 1; j < Main.NUM_QUESTIONS; j++) { //skip first because first is date
+                    for (int j = Main.GAD_QUESTIONS + 2; j < Main.NUM_QUESTIONS; j++) { //skip date and mood
                         depTotal += ints[j]; // the answers to each question in the row are tallied
                     }
                     numDays++;
@@ -75,10 +75,11 @@ public class EntryList {
     }
 
     //get vars
+    public Entry[] getMainArray(){ return this.mainArray; }
     public int getMainArrayLength(){
         return this.mainArrayLength;
     }
-    public int[][] getIntInt(){
+    public int[][] getIntInt(){ //returns PERFECT SIZED int[][]
         int[][] ii = new int[this.mainArrayLength][numQuestions +1];
         for(int i = 0; i < this.mainArrayLength; i++) {
             ii[i] = this.mainArray[i].getArray();
