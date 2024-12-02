@@ -13,15 +13,16 @@ public class UI {
                     "Being so restless that it's hard to sit still?",
                     "Becoming easily annoyed or irritable?",
                     "Feeling afraid as if something awful might happen?"};
+    /* https://www.mdcalc.com/calc/1727/gad7-general-anxiety-disorder7 */
     String[] Dep = {"Little interest or pleasure in doing things?",
                     "Feeling down, depressed, or hopeless?",
                     "Trouble falling or staying asleep, or sleeping too much?",
                     "Feeling tired or having little energy?",
                     "Poor appetite or overeating?",
-                    "Feeling bad about yourself — or that you are a failure or have let yourself or your family down?",
-                    "Trouble concentrating on things, such as reading the newspaper or watching television?",
-                    "Moving or speaking so slowly that other people could have noticed? Or so fidgety or restless that you have been moving a lot more than usual?",
-                    "Struggling with self harm?"};
+                    "Feeling bad about yourself?",
+                    "Trouble concentrating on things?",
+                    "Noticeably more slow or restless than usual?"};
+    /* https://www.mdcalc.com/calc/1725/phq9-patient-health-questionnaire9 */
     //Constructor
     public UI(){
         scnr = new Scanner(System.in);
@@ -33,15 +34,27 @@ public class UI {
     //Basically just scnr.nextInt() but easier
     public int askForInt(String question, int[] valids){ //ADD TRY/CATCH AND VALID VALUES
         System.out.println(question);
-        int response = scnr.nextInt();
+        int response;
+        try {
+            response = scnr.nextInt();
+        }catch(Exception e){
+            response = -1;
+            scnr.next();
+        }
         boolean isFound = response == valids[0];
-        while(!isFound){
+        if(isFound){return response;}
+        while(!isFound){ //loops until returns
             for(int i : valids){
-                if(i == response){return response;}
+                if(i == response){return response;} //breaks loop
             }
             System.out.println("Invalid! Please enter a number between " + valids[0] + "-" + valids[valids.length - 1] + ".");
             System.out.println(question);
-            response = scnr.nextInt();
+            try {
+                response = scnr.nextInt();
+            }catch(Exception e){
+                response = -1;
+                scnr.next();
+            }
         }
         return -1;
     }
@@ -56,25 +69,25 @@ public class UI {
         System.out.println("On a scale from 1 to 5, how are you feeling today?");
         System.out.println("1: Relaxed/Content\n2: Lonely/Insecure\n3: Productive/Motivated\n4: Tired/Drained\n5: Average/Fine\n6: Anxious/Frustrated");
 
-        int[] ints16 = {1, 2, 3, 4, 5, 6};
+        int[] ints16 = {1, 2, 3, 4, 5, 6}; //valid choices
         a[0] = askForInt("", ints16);
         feeling = a[0];
 
-        int ai = 1;
-        int[] ints01 = {0, 1};
+        int aindex = 1; //array index
+        int[] ints01 = {0, 1}; //valid choices
         if(haveGAD){
             System.out.println("Today, have you been troubled by (0 for no, 1 for yes):");
             for(int i = 0; i < GAD.length; i++){
-                a[ai] = askForInt(GAD[i], ints01);
-                ai++;
+                a[aindex] = askForInt(GAD[i], ints01);
+                aindex++;
             }
         }
-        ai = 1 + GAD.length;
+        aindex = 1 + GAD.length;
         if(haveDep){
             System.out.println("Today, have you been troubled by (0 for no, 1 for yes):");
             for(int i = 0; i < Dep.length; i++){
-                a[ai] = askForInt(Dep[i], ints01);
-                ai++;
+                a[aindex] = askForInt(Dep[i], ints01);
+                aindex++;
             }
         }
         return new Entry(date, a);
@@ -104,7 +117,7 @@ public class UI {
             System.out.println("- WARMLINE: (833) 317-4673 Call the number if you'd like to talk to someone and discuss your current emotions.");
 
         } else if (feeling == 3) {
-            System.out.println("That's great to hear! Use this productive energy and complete tasks for the day. Here are some suggestions of activities to try out:");
+            System.out.println("It's great to hear that you're happy! Use this productive energy and complete tasks for the day. Here are some suggestions of activities to try out:");
             System.out.println("- Start an academic task that seems difficult and debunk them.");
             System.out.println("- Clean around the house or organize your items.");
             System.out.println("- Learn a new dish to cook or navigate cooking.");
@@ -156,6 +169,9 @@ public class UI {
         if(10.0 <= avs[1] && avs[1] < 15.0){System.out.println("Moderate Depression.");}
         if(15.0 <= avs[1] && avs[1] < 20.0){System.out.println("Moderately Severe Depression.");}
         if(20.0 <= avs[1] && avs[1] < 27.0){System.out.println("Severe Depression.");}
+
+        System.out.println("NOTE: This is meant to be used alongside professional treatment!");
+        System.out.println("This is just a CS project and not meant to actually diagnose/treat patients.");
     }
 
     //Get vars
