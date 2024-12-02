@@ -3,113 +3,100 @@ import java.util.Scanner;
 
 //Handles File Management
 class ReadingWriting {
-    private final String TEXT_FILE = "wordFile.txt";
-    private final int numberQuestions = Main.NUM_QUESTIONS; //Get number of questions
-    private int[][] mainArray; //Equivalent of EntryList, with each row as an Entry of int questions
-    private int mainArrayLength;
+    private final String TEXT_FILE = "C:\\Users\\lalat\\IdeaProjects\\untitled\\src\\main\\resources\\wordFile.txt";
     private boolean haveGAD; //Ask questions about anxiety (Generalized Anxiety Disorders)?
     private boolean haveDep; //As questions about depression?
 
     //Constructor
     public ReadingWriting() {
-        this.mainArray = new int[100][numberQuestions + 1]; //Oversized array
-        this.mainArrayLength = 0; //Oversized array index
         haveGAD = false; haveDep = false;
+    }
+
+    public void emptyF(UI ui){
+        //UI has System.in scanner so we use it to ask whether user has GAD or depression
+        int setUp = ui.setUp(); //Will be 1, 2, or 3
+        if (setUp != 2) {haveGAD = true;}
+        if (setUp != 1) {haveDep = true;}
     }
 
     //Angela: Reads array from file
     public EntryList readF(UI ui){
+        EntryList ret = new EntryList(Main.NUM_QUESTIONS);
         //open file
         FileInputStream fileByteStream = null;
         try {fileByteStream = new FileInputStream(TEXT_FILE);}
-        catch (FileNotFoundException e) {e.printStackTrace();}
-
-        Scanner inScnr = new Scanner(fileByteStream); //add try/catch
-
-        //first line is haveGAD, haveDep, num of lines following
-        if(!inScnr.hasNext()) {
-            int personalization = ui.setUp();
-            if (personalization == 1 || personalization == 3) {
-                haveGAD = true;
-            }
-            if (personalization == 2 || personalization == 3) {
-                haveDep = true;
-            }
-        }else{
-            this.haveGAD = inScnr.nextInt() == 1; //add try/catch
-            this.haveDep = inScnr.nextInt() == 1; //add try/catch
-            this.mainArrayLength = inScnr.nextInt(); //add try/catch
-
-            //Add data to array
-            int fileLineIndex = 0;
-            int[] temp;
-            while (inScnr.hasNext()) {
-                temp = new int[numberQuestions + 1]; //+1 because first one is date
-                for (int i = 0; i < numberQuestions + 1; i++) {
-                    try {
-                        temp[i] = inScnr.nextInt();
-                    } catch (Exception e) {
-                        break;
-                    }
-                }
-                this.mainArray[fileLineIndex] = temp;
-                fileLineIndex++;
-            }
-
-            //this.mainArrayLength = fileLineIndex;
+        catch (FileNotFoundException e) {
+            System.out.println("ERROR: Try fixing the file path in ReadingWriting.");
+            e.printStackTrace();
         }
-
         try {
-            fileByteStream.close();
-        } catch (IOException e) {
+            Scanner inScnr = new Scanner(fileByteStream);
+
+            //IF FILE IS EMPTY: setup
+            if (!inScnr.hasNext()) { emptyF(ui);}
+            //IF FILE IS NOT EMPTY: Read from File
+            else {
+                //first line: haveGAD haveDep
+                try {
+                    this.haveGAD = inScnr.nextInt() == 1;
+                    this.haveDep = inScnr.nextInt() == 1;
+                } catch (Exception ignored) {}
+
+                //Add data to array
+                int[] temp = new int[Main.NUM_QUESTIONS + 1]; //+1 because first value is date
+                while (inScnr.hasNext()) {
+                    for (int i = 0; i < Main.NUM_QUESTIONS + 1; i++) { //each row = 1 entry
+                        try {
+                            temp[i] = inScnr.nextInt(); //questions in the entry
+                        } catch (Exception e) {
+                            break; //if not enough values just go to the next row, it'll have 0s
+                        }
+                    }
+                    ret.append(temp); //add temp to EntyList
+                }
+
+            }
+        } catch(Exception e){
+            System.out.println("ERROR: There's something wrong with the file scanner!");
+            e.printStackTrace();
+        }
+        try { fileByteStream.close(); }
+        catch (IOException e) {
+            System.out.println("ERROR: There's something wrong with closing the fBS!");
             e.printStackTrace();
         }
 
-        EntryList e = new EntryList(this.numberQuestions);
-        for (int i = 0; i < this.mainArrayLength; i++) {
-            e.append(mainArray[i]);
-        }
-        return e;
+        return ret;
     }
 
     //Angela: Prints array to file
     public int printF(EntryList el){
-        mainArray = el.getIntInt();
-        mainArrayLength = el.getMainArrayLength();
-
+        Entry[] eArray = el.getMainArray();
         PrintWriter outFS = null;
+        int ret = -1;
+
         try{
             FileOutputStream fileStream = new FileOutputStream(TEXT_FILE);
             outFS = new PrintWriter(fileStream);
 
+            //Print personalization
             if(haveGAD){outFS.print("1 ");}else{outFS.print("0 ");}
             if(haveDep){outFS.print("1 ");}else{outFS.print("0 ");}
-            outFS.println(mainArrayLength);
+            outFS.println();
 
-            for(int i = 0; i < mainArrayLength; i++){
-                for(int j : mainArray[i]){
-                  outFS.print(j + " ");
-                }
-                outFS.println();
+            //For each Entry, print out
+            for(Entry e : eArray){
+                outFS.print(e.print());
             }
 
-            return 0;
+            ret = 0;
         }
-        catch(Exception e){return -1;}
+        catch(Exception ignored){}
         finally{
             outFS.close();
         }
+        return ret;
 
-    }
-
-    //Testing
-    public void testPrint(){
-        for(int i = 0; i < this.mainArrayLength; i++){
-            for(int j = 0; j < numberQuestions + 1; j++){
-                System.out.print(mainArray[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
     //Get vars
