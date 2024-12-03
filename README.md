@@ -7,7 +7,9 @@ over an extended period of time can be difficult for many. This program seeks to
 been over the last two weeks based on their answers to the questionnaire.
 
 Instructions for Installing and Running:
-
+1. Click the green "code" button just above the file list in github, and download the project as a ZIP file.
+2. Go to your file explorer, find and right-click the zip file, and extract all the files.
+3. Open your IDE (the developers of this project used IntelliJ, but other Java tools will probably work) and open the unzipped project file from there.
 
 Instructions for Use:
 1. A welcome message will pop up, asking whether you're using this app for anxiety(1), depression(2), or both(3). Type in the corresponding number to answer the question.
