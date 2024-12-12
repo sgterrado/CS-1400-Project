@@ -7,7 +7,7 @@ public class EntryList {
     public EntryList(){}
     public EntryList(int n){
         this.mainArrayLength = 0;
-        this.mainArray = new Entry[100]; //try to oversize
+        this.mainArray = new Entry[1000]; //try to oversize
         this.numQuestions = n;
     }
 
